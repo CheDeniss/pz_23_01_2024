@@ -2,27 +2,42 @@ import React, {useEffect, useState} from 'react';
 import dispatcher from "../EX1_Dispatcher.jsx";
 import eventsArray from "./culturalEventsArray.jsx"
 
-const CHANGE_EVENT = "change";
+    const CHANGE_EVENT = "change";
 
-const CulturalEventsStore = () => {
-    const [events, setEvents] = useState([])
+    let events = []
 
-    const addChangeEventListner = (callback) => {
-        document.addEventListener(CHANGE_EVENT, callback)
-    }
+    const handleAction = (action) => {
+        switch (action.type) {
+            case "ADD_EVENT":
+                setEvents([...events, action.payload]);
+                break;
+            case "ADD_EVENT_TO_MY_EVENTSLIST":
+                addEventToMyEventsList(action.payload);
+                break;
+            case "ADD_COMMENT":
+                setEvents([...events, action.payload]);
+                break;
+            case "GET_EVENTS_BY_TYPE":
+                getEventsByType(action.payload)
+                culturalEventsStore.emitChange()
+                break;
+            case "GET_EVENT_DETAILS":
+                setEvents([...events, action.payload]);
+                break;
+            case "GET_MY_EVENTLIST":
+                setEvents([...events, action.value]);
+                break;
+            default:
+                break;
+        }
+    };
 
-    const removeChangeEventListner = (callback) => {
-        document.removeEventListener(CHANGE_EVENT, callback)
-    }
-
-    const emitChange = () => {
-        console.log('emitChange')
-         document.dispatchEvent(new Event(CHANGE_EVENT))
-    }
+    dispatcher.register(handleAction);
 
     const getStoreEvents = () => {
-        console.log('getStoreEvents - ', events)
-         return events
+        console.log('getStoreEvents ->', events)
+        //return events
+        return events
     }
 
     const addEventToMyEventsList = (id) => {
@@ -30,57 +45,29 @@ const CulturalEventsStore = () => {
         event.isAdded = true
     }
 
-     const getEventsByType = (type) => {
-         let tmp = eventsArray.filter(event => event.type === type)
-         console.log("getEventsByType - tmp -", tmp);
-         setEvents(tmp)
-         console.log("getEventsByType - events", events);
-         emitChange()
-     }
+    const getEventsByType = (type) => {
+        console.log("getEventsByType - type -", type);
+        events = eventsArray.filter((event) => event.type === type);
+        console.log("getEventsByType - events", events);
+    };
 
+    const culturalEventsStore = {
 
-    useEffect(() => {
-        const handleAction = (action) => {
-            switch (action.type) {
-                case "ADD_EVENT":
-                    setEvents([...events, action.payload]);
-                    break;
-                case "ADD_EVENT_TO_MY_EVENTSLIST":
-                    addEventToMyEventsList(action.payload);
-                    break;
-                case "ADD_COMMENT":
-                    setEvents([...events, action.payload]);
-                    break;
-                case "GET_EVENTS_BY_TYPE":
-                    getEventsByType(action.payload);
-                    break;
-                case "GET_EVENT_DETAILS":
-                    setEvents([...events, action.payload]);
-                    break;
-                case "GET_MY_EVENTLIST":
-                    setEvents([...events, action.value]);
-                    break;
-                default:
-                    break;
-            }
-        };
+    addChangeEventListner: (callback) => {
+        document.addEventListener(CHANGE_EVENT, callback)
+    },
 
-        const dispToken =  dispatcher.register(handleAction);
+    removeChangeEventListner: (callback) => {
+        document.removeEventListener(CHANGE_EVENT, callback)
+    },
 
-        return () => {
-            dispatcher.unregister(dispToken);
-        };
-    }, []);
+    emitChange: () => {
+        console.log('emitChange ->')
+        document.dispatchEvent(new Event(CHANGE_EVENT))
+    },
+    getStoreEvents,
+    getEventsByType
+}
 
-
-    return {
-        addChangeEventListner,
-        removeChangeEventListner,
-        getStoreEvents,
-        getEventsByType,
-
-    }
-};
-
-export default CulturalEventsStore;
+export default culturalEventsStore;
 

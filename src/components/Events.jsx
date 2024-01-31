@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import CulturalEventsStore from "../stores/culturalEventsStore.jsx";
+import culturalEventsStore from "../stores/culturalEventsStore.jsx";
 import * as eventsActions from "../actions/EX1_actionCreator.jsx";
 import {getEventsByType} from "../actions/EX1_actionCreator.jsx";
 
 const Events = () => {
 
-    const culturalEventsStore = CulturalEventsStore();
 
     const {type} = useParams()
     const [selectedEvents, setSelectedEvents] = useState([]);
@@ -31,18 +30,19 @@ const Events = () => {
     }
 
     useEffect(() => {
+        console.log('useEffect Events')
+
         culturalEventsStore.addChangeEventListner(onChange);
         eventsActions.getEventsByType(eventType);
-
         return () => {
             culturalEventsStore.removeChangeEventListner(onChange);
         };
-    }, [eventType]);
+    }, [type]);
 
     function onChange() {
-        console.log('onChange before set - ', culturalEventsStore.getStoreEvents())
-        setSelectedEvents(culturalEventsStore.getStoreEvents())
-        console.log('onChange - ', selectedEvents)
+        console.log('onChange start ->', culturalEventsStore.getStoreEvents())
+        setSelectedEvents(culturalEventsStore.getStoreEvents() || [])
+        console.log('onChange - result', selectedEvents)
     }
 
     return (

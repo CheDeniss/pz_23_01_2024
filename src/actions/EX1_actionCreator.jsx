@@ -23,6 +23,7 @@ export function addComment(id, comment) {
 }
 
 export function getEventsByType(type) {
+    console.log('Подія getEventsByType ->')
     dispatcher.dispatch({
         type: actionTypes.GET_EVENTS_BY_TYPE,
         payload: type
