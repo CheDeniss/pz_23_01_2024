@@ -8,10 +8,10 @@ const Events = () => {
 
     const culturalEventsStore = CulturalEventsStore();
 
-const {type} = useParams()
+    const {type} = useParams()
+    const [selectedEvents, setSelectedEvents] = useState([]);
 
-
-let eventType;
+    let eventType;
 
     switch (type) {
         case "ФІЛЬМИ":
@@ -30,8 +30,6 @@ let eventType;
             eventType = "No such type";
     }
 
-    const [selectedEvents, setSelectedEvents] = useState([]);
-
     useEffect(() => {
         culturalEventsStore.addChangeEventListner(onChange);
         eventsActions.getEventsByType(eventType);
@@ -42,9 +40,9 @@ let eventType;
     }, [eventType]);
 
     function onChange() {
+        console.log('onChange before set - ', culturalEventsStore.getStoreEvents())
         setSelectedEvents(culturalEventsStore.getStoreEvents())
-        console.log('onChange')
-        console.log(selectedEvents);
+        console.log('onChange - ', selectedEvents)
     }
 
     return (

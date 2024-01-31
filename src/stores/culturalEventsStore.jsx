@@ -21,8 +21,7 @@ const CulturalEventsStore = () => {
     }
 
     const getStoreEvents = () => {
-        console.log('getStoreEvents')
-        console.log(events)
+        console.log('getStoreEvents - ', events)
          return events
     }
 
@@ -32,8 +31,11 @@ const CulturalEventsStore = () => {
     }
 
      const getEventsByType = (type) => {
-        setEvents(eventsArray.filter(event => event.type === type))
-        emitChange()
+         let tmp = eventsArray.filter(event => event.type === type)
+         console.log("getEventsByType - tmp -", tmp);
+         setEvents(tmp)
+         console.log("getEventsByType - events", events);
+         emitChange()
      }
 
 
@@ -68,7 +70,7 @@ const CulturalEventsStore = () => {
         return () => {
             dispatcher.unregister(dispToken);
         };
-    }, [events]);
+    }, []);
 
 
     return {
