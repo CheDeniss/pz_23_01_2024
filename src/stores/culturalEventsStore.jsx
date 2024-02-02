@@ -1,48 +1,94 @@
 import React, {useEffect, useState} from 'react';
 import dispatcher from "../EX1_Dispatcher.jsx";
 import eventsArray from "./culturalEventsArray.jsx"
+import {addComment, getMyEventsList} from "../actions/EX1_actionCreator.jsx";
 
     const CHANGE_EVENT = "change";
 
     let events = []
+    let details
+    let comments = []
 
-    const handleAction = (action) => {
+
+const handleAction = (action) => {
         switch (action.type) {
-            case "ADD_EVENT":
-                setEvents([...events, action.payload]);
+            case "ADD_NEW_EVENT":
+                console.log('ADD_EVENT ->', action.payload)
+                eventsArray.push(action.payload)
                 break;
             case "ADD_EVENT_TO_MY_EVENTSLIST":
+                console.log('ADD_EVENT_TO_MY_EVENTSLIST ->', action.payload)
                 addEventToMyEventsList(action.payload);
+                culturalEventsStore.emitChange()
                 break;
             case "ADD_COMMENT":
-                setEvents([...events, action.payload]);
+                addCommentById(action.payload.id, action.payload.comment)
+                culturalEventsStore.emitChange()
+                break;
+            case "GET_COMMENTS":
+                getCommentsById(action.payload)
+                culturalEventsStore.emitChange()
                 break;
             case "GET_EVENTS_BY_TYPE":
                 getEventsByType(action.payload)
                 culturalEventsStore.emitChange()
                 break;
             case "GET_EVENT_DETAILS":
-                setEvents([...events, action.payload]);
+                takeDetails(action.payload)
+                culturalEventsStore.emitChange()
                 break;
             case "GET_MY_EVENTLIST":
-                setEvents([...events, action.value]);
+                createMyEventsList()
+                culturalEventsStore.emitChange()
                 break;
             default:
                 break;
         }
     };
 
-    dispatcher.register(handleAction);
+    dispatcher.register(handleAction)
 
-    const getStoreEvents = () => {
+    const addCommentById = (id, comment) => {
+        console.log('addComment ->', id, comment)
+        let tmp = eventsArray.find(event => event.id === id)
+        tmp.comments.push(comment)
+        console.log('addComment ->', tmp.comments)
+    }
+
+   const getCommentsById = (id) => {
+        console.log('getCommentsById ->', id)
+        let tmp = eventsArray.find(event => event.id === id)
+        console.log('getCommentsById ->', tmp.comments)
+        comments = tmp.comments
+    }
+
+    export const getCommentsOfEvent = () => {
+        console.log('getCommentsOfEvent ->', comments)
+        return comments
+    }
+
+    export const getStoreEvents = () => {
         console.log('getStoreEvents ->', events)
         //return events
         return events
     }
 
+    const takeDetails = (id) => {
+        console.log('takeDetails ->', id)
+        let tmp = eventsArray.find(event => event.id === id)
+        console.log('takeDetails ->', tmp.details)
+        details = tmp.details
+    }
+
+    export const getDetailsOfEvent = () => {
+        console.log('getEventDetails ->', details)
+        return details
+    }
+
     const addEventToMyEventsList = (id) => {
         const event = events.find(event => event.id === id)
-        event.isAdded = true
+        event.isFavorite = !event.isFavorite
+        console.log('addEventToMyEventsList ->', event)
     }
 
     const getEventsByType = (type) => {
@@ -51,22 +97,24 @@ import eventsArray from "./culturalEventsArray.jsx"
         console.log("getEventsByType - events", events);
     };
 
-    const culturalEventsStore = {
+    const createMyEventsList = () => {
+        console.log("createMyEventsList - events", events);
+        events = eventsArray.filter((event) => event.isFavorite === true);
+        console.log("createMyEventsList - events", events);
+    };
 
+const culturalEventsStore = {
     addChangeEventListner: (callback) => {
         document.addEventListener(CHANGE_EVENT, callback)
     },
-
     removeChangeEventListner: (callback) => {
         document.removeEventListener(CHANGE_EVENT, callback)
     },
-
     emitChange: () => {
         console.log('emitChange ->')
         document.dispatchEvent(new Event(CHANGE_EVENT))
     },
-    getStoreEvents,
-    getEventsByType
+    getStoreEvents, getDetailsOfEvent, getCommentsOfEvent
 }
 
 export default culturalEventsStore;

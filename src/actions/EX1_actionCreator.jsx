@@ -2,6 +2,7 @@ import dispatcher from "../EX1_Dispatcher.jsx"
 import actionTypes from "../actions/EX1_actionTypes.jsx"
 
 export function addEvent(event) {
+    console.log('Подія addEvent ->', event)
     dispatcher.dispatch({
         type: actionTypes.ADD_NEW_EVENT,
         payload: event
@@ -19,6 +20,13 @@ export function addComment(id, comment) {
     dispatcher.dispatch({
         type: actionTypes.ADD_COMMENT,
         payload: {id, comment}
+    })
+}
+
+export function getComments(id) {
+    dispatcher.dispatch({
+        type: actionTypes.GET_COMMENTS,
+        payload: id
     })
 }
 

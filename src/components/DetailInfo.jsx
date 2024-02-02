@@ -1,9 +1,13 @@
 import React from 'react';
+import './componentsStyles.css'
+import Comments from "./Comments.jsx";
 
-const DetailInfo = () => {
+const DetailInfo = ({ isOpen, text, id }) => {
     return (
-        <div>
-
+        <div className={`detail-${isOpen ? 'show' : 'hide'}`}>
+            <p>{text}</p>
+            <hr/>
+            <Comments props={id}/>
         </div>
     );
 };

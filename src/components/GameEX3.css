@@ -1,0 +1,51 @@
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-gap: 4px;
+  margin: 10px auto;
+}
+
+.board button {
+  background: #8eb054;
+  border-radius: 6px;
+}
+
+.square {
+  font-size: 35px;
+  width: 100px;
+  height: 100px;
+}
+
+.game {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 30px auto;
+}
+
+.game-info {
+  display: flex;
+    flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 20px;
+}
+
+.statuss {
+  margin: 20px 0 20px 0;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.new-button {
+  width: 150px;
+  aspect-ratio: 3/1;
+  background-color: #8eb054;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 2px;
+  border-radius: 6px;
+}

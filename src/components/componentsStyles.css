@@ -1,0 +1,69 @@
+.event-item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+    height: 240px;
+    padding: 20px;
+    border-radius: 10px;
+    border: lightslategrey 2px solid;
+    background-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+    transition: all 0.3s ease-in-out;
+}
+
+.details-part{
+    display: flex;
+    height: 100%;
+    justify-content: center;
+}
+
+.flex-outlet {
+    display: flex;
+    flex-wrap: wrap
+}
+
+.detail-hide {
+    width: 0;
+    opacity: 0;
+    transition: width 0.2s ease-in-out, opacity 0.2s ease-in-out;
+}
+
+.detail-show {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: 90%;
+    padding: 10px;
+    margin-left: 20px;
+    border: 1px solid #6d8198;
+    border-radius: 10px;
+    overflow: auto;
+
+    transition: width 0.2s ease-in-out, opacity 0.2s ease-in-out;
+}
+
+.comments-comtainer{
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    height: 100%;
+    padding: 0 8px 0 5px;
+}
+
+.comments-comtainer textarea{
+    resize: none;
+    width: 95%;
+    margin: 5px 5px 5px 0;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid #6d8198;
+}
+
+.form-part{
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    height: 100%;
+    padding: 0 8px 0 5px;
+}

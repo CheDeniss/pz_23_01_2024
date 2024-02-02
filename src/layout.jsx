@@ -7,7 +7,7 @@ const Layout = () => {
     return (
         <div>
             <Menu/>
-            <Outlet/>
+                <Outlet />
         </div>
     );
 };

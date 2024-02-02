@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
+import {useLocation } from "react-router-dom";
 import culturalEventsStore from "../stores/culturalEventsStore.jsx";
 import * as eventsActions from "../actions/EX1_actionCreator.jsx";
-import {getEventsByType} from "../actions/EX1_actionCreator.jsx";
+import EventItem from "./EventItem.jsx";
 
 const Events = () => {
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const type = searchParams.get('type');
 
-
-    const {type} = useParams()
     const [selectedEvents, setSelectedEvents] = useState([]);
-
     let eventType;
 
     switch (type) {
@@ -33,7 +33,7 @@ const Events = () => {
         console.log('useEffect Events')
 
         culturalEventsStore.addChangeEventListner(onChange);
-        eventsActions.getEventsByType(eventType);
+        eventType === "Обране" ? eventsActions.getMyEventsList() : eventsActions.getEventsByType(eventType)
         return () => {
             culturalEventsStore.removeChangeEventListner(onChange);
         };
@@ -48,15 +48,10 @@ const Events = () => {
     return (
         <div>
             <h1>{type}</h1>
-            <div>
+            <div className="flex-outlet">
                 {selectedEvents.map(event =>
                 <div key={event.id}>
-                    <h3>{event.name}</h3>
-                    <p>{event.type}</p>
-                    <p>{event.briefInfo}</p>
-                    <p>{event.date}</p>
-                    <p>{event.time}</p>
-                    <button onClick={() => eventsActions.addEventToMyEventsList(event.id)}>Додати до моїх подій</button>
+                    <EventItem props={event}/>
                 </div>)}
             </div>
         </div>
